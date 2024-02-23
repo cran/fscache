@@ -1,0 +1,169 @@
+---
+title: "Introduction to fscache package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+*fscache* helps handle a user file system cache for an application or package.
+
+Let us suppose we have an application called `myapp` for which we want to save
+text content on disk in order to reload it later.
+With *fscache* we will create a `Cache` object that will place our content in a
+standard location, according to the poperating system we are running on, and
+help us manage it (save, load, delete, place in sub-folders, etc).
+
+## Initializing the cache
+
+First, start by loading the package:
+```{r setup}
+library(fscache)
+```
+
+Then we create a `Cache` instance:
+```{r}
+my.folder.cache <- file.path(tempdir(), 'my.cache') # We would usually use here a relative path like 'myapp'
+cache <- Cache$new(my.folder.cache)
+```
+For this vignette, we use a temporary folder as our cache folder.
+Since the temporary folder is an absolute path, the user HOME folder will not
+be used.
+However, usually, in practice, we give the name of our application as the cache
+folder to create.
+The folder will be created in the user space, inside the standard path defined
+for the operating system, given by the `tools`  package.
+
+If we look at the `cache` object, we can see the exact location of the created
+cache folder:
+```{r}
+cache
+```
+We also see that the cache is both *readable* and *writable* by default.
+However we may block either read access or write access for our cache, using
+the `setReadable()` and `setWritable()` methods.
+It is sometimes useuful for testing purposes.
+
+The full path to the cache folder is also accessible through the `getFolder()`
+method:
+```{r}
+cache$getFolder()
+```
+
+## Saving and loading content
+
+Let us save the following text contents into the cache:
+```{r}
+x <- c('abc', 'def', 'ghi')
+```
+
+For that we use the `saveContents()` method:
+```{r}
+cache$saveContents(x, c('a.txt', 'b.txt', 'c.txt'))
+```
+We have saved our three strings into three files inside the cache folder.
+Since all three files have the same extension, we may have used the `suffix`
+parameters to avoid repeating the extension in the filenames:
+```{r}
+cache$saveContents(x, c('a', 'b', 'c'), suffix='.txt')
+```
+Note that *fscache* does not complain that the files already exist. It
+overrides them silently.
+
+We can list the existing files inside the cache folder with the following
+command:
+```{r}
+cache$globPaths(suffix='.txt')
+```
+
+Loading the contents from cached files is done with the `loadContents()`
+method, which returns a `character` vector with names set with the file paths:
+```{r}
+cache$loadContents(c('a', 'b', 'c'), suffix='.txt')
+```
+Note that if we try to load the content from non-existing file, a `NA` value
+will be returned:
+```{r}
+cache$loadContents(c('a', 'b', 'c', 'd'), suffix='.txt')
+```
+
+Prior to loading contents, we may test the existence of files inside the cache
+folder, with the `pathsExist()` method:
+```{r}
+cache$pathsExist(c('a', 'b', 'c', 'd'), suffix='.txt')
+```
+
+## Using sub-folders
+
+Instead of putting them directly inside the cache folder, files may be put
+inside sub-folders to organize them.
+
+Here we put our contents into three new files inside a sub-folder named
+`"mysub"` that will be automatically created:
+```{r}
+cache$saveContents(x, c('x', 'y', 'z'), suffix='.txt', sub.folder='mysub')
+```
+Let us look a the content of our sub-folder:
+```{r}
+cache$globPaths(sub.folder='mysub')
+```
+
+## Deleting files
+
+Files may be deleted from the cache, as in the following command:
+```{r}
+cache$delPaths(c('a', 'c'), suffix='.txt')
+```
+The remaining files are:
+```{r}
+cache$globPaths()
+```
+
+For deleting files inside a sub-folder, use the `sub.folder` parameter:
+```{r}
+cache$delPaths('y', suffix='.txt', sub.folder='mysub')
+```
+
+For deleting a sub-folder with all its content, use the `delFolder()` method:
+```{r}
+cache$delFolder('mysub')
+```
+
+## Copying or moving files into the cache
+
+It is also possible to move or copy files that reside outside the cache folder,
+into the cache folder.
+
+Let us create a file:
+```{r}
+my.file <- tempfile('my.file', fileext='.txt')
+cat('My text content.', file=my.file)
+my.file
+```
+
+To move it into the cache, we use the `importFiles()` method:
+```{r}
+cache$importFiles(my.file, action='move')
+```
+For copying, we would have set `action` to `"copy"`.
+
+Here the new list of cached files:
+```{r}
+cache$globPaths()
+```
+
+## Erasing the cache
+
+If we wish to delete the whole cache folder with all its content, we have to
+run the following command:
+```{r}
+cache$erase()
+```
