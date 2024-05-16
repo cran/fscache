@@ -2,7 +2,7 @@
 title: "Introduction to fscache package"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{intro}
+  %\VignetteIndexEntry{Introduction to fscache package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -31,14 +31,15 @@ library(fscache)
 
 Then we create a `Cache` instance:
 ```{r}
-my.folder.cache <- file.path(tempdir(), 'my.cache') # We would usually use here a relative path like 'myapp'
-cache <- Cache$new(my.folder.cache)
+my_folder_cache <- file.path(tempdir(), "my.cache")
+cache <- Cache$new(my_folder_cache)
 ```
 For this vignette, we use a temporary folder as our cache folder.
 Since the temporary folder is an absolute path, the user HOME folder will not
 be used.
-However, usually, in practice, we give the name of our application as the cache
-folder to create.
+In practice, however, we give the name of our application as the cache folder
+to create. It will then be created inside the standard use cache folder, which
+is relative to the user HOME folder.
 The folder will be created in the user space, inside the standard path defined
 for the operating system, given by the `tools`  package.
 
@@ -62,18 +63,18 @@ cache$getFolder()
 
 Let us save the following text contents into the cache:
 ```{r}
-x <- c('abc', 'def', 'ghi')
+x <- c("abc", "def", "ghi")
 ```
 
 For that we use the `saveContents()` method:
 ```{r}
-cache$saveContents(x, c('a.txt', 'b.txt', 'c.txt'))
+cache$saveContents(x, c("a.txt", "b.txt", "c.txt"))
 ```
 We have saved our three strings into three files inside the cache folder.
 Since all three files have the same extension, we may have used the `suffix`
 parameters to avoid repeating the extension in the filenames:
 ```{r}
-cache$saveContents(x, c('a', 'b', 'c'), suffix='.txt')
+cache$saveContents(x, c("a", "b", "c"), suffix = ".txt")
 ```
 Note that *fscache* does not complain that the files already exist. It
 overrides them silently.
@@ -81,24 +82,24 @@ overrides them silently.
 We can list the existing files inside the cache folder with the following
 command:
 ```{r}
-cache$globPaths(suffix='.txt')
+cache$globPaths(suffix = ".txt")
 ```
 
 Loading the contents from cached files is done with the `loadContents()`
 method, which returns a `character` vector with names set with the file paths:
 ```{r}
-cache$loadContents(c('a', 'b', 'c'), suffix='.txt')
+cache$loadContents(c("a", "b", "c"), suffix = ".txt")
 ```
 Note that if we try to load the content from non-existing file, a `NA` value
 will be returned:
 ```{r}
-cache$loadContents(c('a', 'b', 'c', 'd'), suffix='.txt')
+cache$loadContents(c("a", "b", "c", "d"), suffix = ".txt")
 ```
 
 Prior to loading contents, we may test the existence of files inside the cache
 folder, with the `pathsExist()` method:
 ```{r}
-cache$pathsExist(c('a', 'b', 'c', 'd'), suffix='.txt')
+cache$pathsExist(c("a", "b", "c", "d"), suffix = ".txt")
 ```
 
 ## Using sub-folders
@@ -109,32 +110,32 @@ inside sub-folders to organize them.
 Here we put our contents into three new files inside a sub-folder named
 `"mysub"` that will be automatically created:
 ```{r}
-cache$saveContents(x, c('x', 'y', 'z'), suffix='.txt', sub.folder='mysub')
+cache$saveContents(x, c("x", "y", "z"), suffix = ".txt", sub_folder = "mysub")
 ```
 Let us look a the content of our sub-folder:
 ```{r}
-cache$globPaths(sub.folder='mysub')
+cache$globPaths(sub_folder = "mysub")
 ```
 
 ## Deleting files
 
 Files may be deleted from the cache, as in the following command:
 ```{r}
-cache$delPaths(c('a', 'c'), suffix='.txt')
+cache$delPaths(c("a", "c"), suffix = ".txt")
 ```
 The remaining files are:
 ```{r}
 cache$globPaths()
 ```
 
-For deleting files inside a sub-folder, use the `sub.folder` parameter:
+For deleting files inside a sub-folder, use the `sub_folder` parameter:
 ```{r}
-cache$delPaths('y', suffix='.txt', sub.folder='mysub')
+cache$delPaths("y", suffix = ".txt", sub_folder = "mysub")
 ```
 
 For deleting a sub-folder with all its content, use the `delFolder()` method:
 ```{r}
-cache$delFolder('mysub')
+cache$delFolder("mysub")
 ```
 
 ## Copying or moving files into the cache
@@ -144,14 +145,14 @@ into the cache folder.
 
 Let us create a file:
 ```{r}
-my.file <- tempfile('my.file', fileext='.txt')
-cat('My text content.', file=my.file)
-my.file
+my_file <- tempfile("my_file", fileext = ".txt")
+cat("My text content.", file = my_file)
+my_file
 ```
 
 To move it into the cache, we use the `importFiles()` method:
 ```{r}
-cache$importFiles(my.file, action='move')
+cache$importFiles(my_file, action = "move")
 ```
 For copying, we would have set `action` to `"copy"`.
 

@@ -8,8 +8,8 @@ knitr::opts_chunk$set(
 library(fscache)
 
 ## -----------------------------------------------------------------------------
-my.folder.cache <- file.path(tempdir(), 'my.cache') # We would usually use here a relative path like 'myapp'
-cache <- Cache$new(my.folder.cache)
+my_folder_cache <- file.path(tempdir(), "my.cache")
+cache <- Cache$new(my_folder_cache)
 
 ## -----------------------------------------------------------------------------
 cache
@@ -18,51 +18,51 @@ cache
 cache$getFolder()
 
 ## -----------------------------------------------------------------------------
-x <- c('abc', 'def', 'ghi')
+x <- c("abc", "def", "ghi")
 
 ## -----------------------------------------------------------------------------
-cache$saveContents(x, c('a.txt', 'b.txt', 'c.txt'))
+cache$saveContents(x, c("a.txt", "b.txt", "c.txt"))
 
 ## -----------------------------------------------------------------------------
-cache$saveContents(x, c('a', 'b', 'c'), suffix='.txt')
+cache$saveContents(x, c("a", "b", "c"), suffix = ".txt")
 
 ## -----------------------------------------------------------------------------
-cache$globPaths(suffix='.txt')
+cache$globPaths(suffix = ".txt")
 
 ## -----------------------------------------------------------------------------
-cache$loadContents(c('a', 'b', 'c'), suffix='.txt')
+cache$loadContents(c("a", "b", "c"), suffix = ".txt")
 
 ## -----------------------------------------------------------------------------
-cache$loadContents(c('a', 'b', 'c', 'd'), suffix='.txt')
+cache$loadContents(c("a", "b", "c", "d"), suffix = ".txt")
 
 ## -----------------------------------------------------------------------------
-cache$pathsExist(c('a', 'b', 'c', 'd'), suffix='.txt')
+cache$pathsExist(c("a", "b", "c", "d"), suffix = ".txt")
 
 ## -----------------------------------------------------------------------------
-cache$saveContents(x, c('x', 'y', 'z'), suffix='.txt', sub.folder='mysub')
+cache$saveContents(x, c("x", "y", "z"), suffix = ".txt", sub_folder = "mysub")
 
 ## -----------------------------------------------------------------------------
-cache$globPaths(sub.folder='mysub')
+cache$globPaths(sub_folder = "mysub")
 
 ## -----------------------------------------------------------------------------
-cache$delPaths(c('a', 'c'), suffix='.txt')
+cache$delPaths(c("a", "c"), suffix = ".txt")
 
 ## -----------------------------------------------------------------------------
 cache$globPaths()
 
 ## -----------------------------------------------------------------------------
-cache$delPaths('y', suffix='.txt', sub.folder='mysub')
+cache$delPaths("y", suffix = ".txt", sub_folder = "mysub")
 
 ## -----------------------------------------------------------------------------
-cache$delFolder('mysub')
+cache$delFolder("mysub")
 
 ## -----------------------------------------------------------------------------
-my.file <- tempfile('my.file', fileext='.txt')
-cat('My text content.', file=my.file)
-my.file
+my_file <- tempfile("my_file", fileext = ".txt")
+cat("My text content.", file = my_file)
+my_file
 
 ## -----------------------------------------------------------------------------
-cache$importFiles(my.file, action='move')
+cache$importFiles(my_file, action = "move")
 
 ## -----------------------------------------------------------------------------
 cache$globPaths()

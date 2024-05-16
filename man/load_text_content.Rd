@@ -21,10 +21,11 @@ The content is returned as a single character value.
 }
 \examples{
 # Create a file in Latin-1 encoding
-text_file <- tempfile('myfile', fileext='.txt')
-dir.create(dirname(text_file), recursive=TRUE)
-x <- iconv("Qui sème le vent récolte la tempête.", from="utf8", to="latin1")
-stringi::stri_write_lines(x, text_file, encoding="latin1")
+text_file <- tempfile('myfile', fileext = '.txt')
+dir.create(dirname(text_file), recursive = TRUE)
+x <- iconv("Qui sème le vent récolte la tempête.",
+           from = "utf8", to = "latin1")
+stringi::stri_write_lines(x, text_file, encoding = "latin1")
 
 # Load its content
 content <- fscache::load_text_content(text_file)

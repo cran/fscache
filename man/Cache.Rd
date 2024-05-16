@@ -23,19 +23,20 @@ Whole folders can be deleted, including the main cache folder.
 cache <- Cache$new(tempdir())
 
 # Create some contents for the example
-contents <- c('a', 'b', 'c')
+contents <- c("a", "b", "c")
 
 # Save contents
-cache$saveContents(contents, c('a.txt', 'b.txt', 'c.txt'), sub.folder='sub1')
+cache$saveContents(contents, c("a.txt", "b.txt", "c.txt"),
+                   sub_folder = "sub1")
 
 # Get list of files inside folder
-files <- cache$listFolder('sub1')
+files <- cache$listFolder("sub1")
 
 # Delete files
-cache$delPaths(c('a.txt', 'c.txt'), sub.folder='sub1')
+cache$delPaths(c("a.txt", "c.txt"), sub_folder = "sub1")
 
 # Delete whole sub-folder
-cache$delFolder('sub1')
+cache$delFolder("sub1")
 
 # Erase cache
 cache$erase()
@@ -46,10 +47,10 @@ cache$erase()
 ## ------------------------------------------------
 
 # Create a new cache instance.
-# Note for the sake of the example we use a temporary directory specified as
-# an absolute path, however the usual way to use the cache system is to
-# provide a relative path, that will be placed inside the standard user cache
-# folder defined by the OS.
+# Note for the sake of the example we use a temporary directory specified
+# as an absolute path, however the usual way to use the cache system is
+# to provide a relative path, that will be placed inside the standard
+# user cache folder defined by the OS.
 cache <- Cache$new(tempdir())
 
 # Erase cache
@@ -127,7 +128,7 @@ cache <- Cache$new(tempdir())
 folder <- cache$getFolder()
 
 # Get the absolute path to a cache sub-folder
-sub.folder <- cache$getFolder('my_sub_folder')
+sub_folder <- cache$getFolder('my_sub_folder')
 
 # Erase cache
 cache$erase()
@@ -141,8 +142,8 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Test if a sub-folder exists
-if (cache$hasFolder('my_sub_folder')) {
-  print('Sub-folder exists.')
+if (cache$hasFolder("my_sub_folder")) {
+  print("Sub-folder exists.")
 }
 
 # Erase cache
@@ -157,13 +158,13 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Get the paths a list of filenames should have in the cache folder
-paths <- cache$getPaths(c('a.csv', 'b.txt'))
+paths <- cache$getPaths(c("a.csv", "b.txt"))
 
 # Get paths using a common extension for filenames
-paths <- cache$getPaths(c('a', 'b'), suffix='.csv')
+paths <- cache$getPaths(c("a", "b"), suffix = ".csv")
 
 # Get paths of files inside a sub-folder
-paths <- cache$getPaths(c('a.csv', 'b.txt'), sub.folder='foo')
+paths <- cache$getPaths(c("a.csv", "b.txt"), sub_folder = "foo")
 
 # Erase cache
 cache$erase()
@@ -177,10 +178,10 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Get all existing files inside sub-folder foo
-paths <- cache$globPaths(sub.folder='foo')
+paths <- cache$globPaths(sub_folder = "foo")
 
-# Get all existing files with extension '.txt' inside main folder
-paths <- cache$globPaths(suffix='.txt')
+# Get all existing files with extension ".txt" inside main folder
+paths <- cache$globPaths(suffix = ".txt")
 
 # Erase cache
 cache$erase()
@@ -193,8 +194,8 @@ cache$erase()
 # Create a new cache instance
 cache <- Cache$new(tempdir())
 
-# Get the number of files inside sub-folder 'foo'
-n <- cache$getNbItems('foo')
+# Get the number of files inside sub-folder "foo"
+n <- cache$getNbItems("foo")
 
 # Erase cache
 cache$erase()
@@ -208,7 +209,7 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Test if some files exist in the cache
-exits <- cache$pathsExist(c('a', 'b'), suffix='.txt')
+exits <- cache$pathsExist(c("a", "b"), suffix = ".txt")
 
 # Erase cache
 cache$erase()
@@ -221,8 +222,8 @@ cache$erase()
 # Create a new cache instance
 cache <- Cache$new(tempdir())
 
-# Test if tag file 'downloaded' exists in sub-folder 'hmdb'
-if (cache$tagExists('downloaded', sub.folder='hmdb')) {
+# Test if tag file "downloaded" exists in sub-folder "hmdb"
+if (cache$tagExists("downloaded", sub_folder = "hmdb")) {
   print("Tag exists")
 }
 
@@ -237,8 +238,8 @@ cache$erase()
 # Create a new cache instance
 cache <- Cache$new(tempdir())
 
-# Create tag file 'downloaded' in sub-folder 'hmdb'
-cache$writeTag('downloaded', sub.folder='hmdb')
+# Create tag file "downloaded" in sub-folder "hmdb"
+cache$writeTag("downloaded", sub_folder = "hmdb")
 
 # Erase cache
 cache$erase()
@@ -280,11 +281,11 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Create some files for the example
-files <- c('k.txt', 'u.csv')
+files <- c("k.txt", "u.csv")
 file.create(files)
 
 # Move those files into the cache
-cache$importFiles(files, sub.folder='foo', action='copy')
+cache$importFiles(files, sub_folder = "foo", action = "copy")
 
 # Remove original files
 unlink(files)
@@ -301,10 +302,10 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Create some contents for the example
-contents <- c('a', 'b', 'c')
+contents <- c("a", "b", "c")
 
 # Save contents
-cache$saveContents(contents, c('a.txt', 'b.txt', 'c.txt'))
+cache$saveContents(contents, c("a.txt", "b.txt", "c.txt"))
 
 # Erase cache
 cache$erase()
@@ -318,15 +319,15 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Create some contents for the example
-contents <- c('1', '2', '3')
+contents <- c("1", "2", "3")
 
 # Save contents
-cache$saveContents(contents, c('a', 'b', 'c'), suffix='.txt',
-                   sub.folder='ex2')
+cache$saveContents(contents, c("a", "b", "c"), suffix = ".txt",
+                   sub_folder = "ex2")
 
 # Load contents
-contents <- cache$loadContents(c('a', 'b', 'c'), suffix='.txt',
-                               sub.folder='ex2')
+contents <- cache$loadContents(c("a", "b", "c"), suffix = ".txt",
+                               sub_folder = "ex2")
 
 # Erase cache
 cache$erase()
@@ -340,7 +341,7 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Delete some cache files
-cache$delPaths(c('a.txt', 'b.txt'))
+cache$delPaths(c("a.txt", "b.txt"))
 
 # Erase cache
 cache$erase()
@@ -354,7 +355,7 @@ cache$erase()
 cache <- Cache$new(tempdir())
 
 # Delete sub-folder
-cache$delFolder('my_sub_folder')
+cache$delFolder("my_sub_folder")
 
 # Erase cache
 cache$erase()
@@ -365,10 +366,10 @@ cache$erase()
 ## ------------------------------------------------
 
 # Create a new cache instance
-cache <- Cache$new('my_cache_folder')
+cache <- Cache$new("my_cache_folder")
 
 # List files in sub-folder
-files <- cache$listFolder('my_sub_folder')
+files <- cache$listFolder("my_sub_folder")
 
 
 ## ------------------------------------------------
@@ -437,7 +438,8 @@ New instance initializer.
 Initializes a \code{Cache} instance, using a specified folder.
 Path to the folder can be absolute or relative.
 When relative, the absolute root folder is either the standard user cache
-folder or the current working directory, depending on \code{user} parameter.
+folder or the current working directory, depending on \code{user}
+parameter.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$new(folder, user = TRUE, force = FALSE)}\if{html}{\out{</div>}}
 }
@@ -445,18 +447,20 @@ folder or the current working directory, depending on \code{user} parameter.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{folder}}{The path to the wanted cache folder. Either an absolute path,
-or a relative path that will be resolved immediately into an
-absolute path.}
+\item{\code{folder}}{The path to the wanted cache folder. Either an absolute
+path, or a relative path that will be resolved immediately
+into an absolute path.}
 
-\item{\code{user}}{If set to TRUE and the folder path is a relative path, then the
-path is resolved relatively to the standard user cache folder (i.e.:
-we call \code{tools::R_user_dir(folder, which='cache')}). A good and standard
-practice is to set the \code{folder} parameter to your package name, using.}
+\item{\code{user}}{If set to TRUE and the folder path is a relative path, then
+the path is resolved relatively to the standard user cache
+folder (i.e.: we call \code{tools::R_user_dir(folder,
+            which = 'cache')}). A good and standard practice is to set
+the \code{folder} parameter to your package name,
+using.}
 
-\item{\code{force}}{If the folder exists, is not empty and is not an fscache folder,
-fails if force is \code{FALSE}, and use folder anyway if force is
-\code{TRUE}.}
+\item{\code{force}}{If the folder exists, is not empty and is not an fscache
+folder, fails if force is \code{FALSE}, and use folder
+anyway if force is \code{TRUE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -466,10 +470,10 @@ Nothing.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{# Create a new cache instance.
-# Note for the sake of the example we use a temporary directory specified as
-# an absolute path, however the usual way to use the cache system is to
-# provide a relative path, that will be placed inside the standard user cache
-# folder defined by the OS.
+# Note for the sake of the example we use a temporary directory specified
+# as an absolute path, however the usual way to use the cache system is
+# to provide a relative path, that will be placed inside the standard
+# user cache folder defined by the OS.
 cache <- Cache$new(tempdir())
 
 # Erase cache
@@ -565,8 +569,8 @@ Allows or disallows reading to the cache folder.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{readable}}{Set to \code{FALSE} to disallow reading and to \code{TRUE} to
-allow it.}
+\item{\code{readable}}{Set to \code{FALSE} to disallow reading and to
+\code{TRUE} to allow it.}
 }
 \if{html}{\out{</div>}}
 }
@@ -604,8 +608,8 @@ Allows or disallows writing to the cache folder.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{writable}}{Set to \code{FALSE} to disallow writing and to \code{TRUE} to
-allow it.}
+\item{\code{writable}}{Set to \code{FALSE} to disallow writing and to
+\code{TRUE} to allow it.}
 }
 \if{html}{\out{</div>}}
 }
@@ -638,19 +642,27 @@ Gets the path to the main cache folder or a sub-folder.
 Returns the absolute path to the main cache folder or a cache sub-folder.
 By default, the folder is created if it does not exist.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$getFolder(sub.folder = NULL, create = TRUE, fail = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$getFolder(
+  sub_folder = NULL,
+  create = TRUE,
+  fail = FALSE,
+  sub.folder = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
 
-\item{\code{create}}{If set to \code{TRUE} and the folder does not exist, creates
-it.}
+\item{\code{create}}{If set to \code{TRUE} and the folder does not exist,
+creates it.}
 
 \item{\code{fail}}{If set to \code{TRUE}, throws an error if the folder does not
 exist.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -666,7 +678,7 @@ cache <- Cache$new(tempdir())
 folder <- cache$getFolder()
 
 # Get the absolute path to a cache sub-folder
-sub.folder <- cache$getFolder('my_sub_folder')
+sub_folder <- cache$getFolder('my_sub_folder')
 
 # Erase cache
 cache$erase()
@@ -683,13 +695,16 @@ cache$erase()
 \subsection{Method \code{hasFolder()}}{
 Tests if the cache main folder or a cache sub-folder exists.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$hasFolder(sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$hasFolder(sub_folder = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{sub.folder}}{The sub-folder.}
+\item{\code{sub_folder}}{The sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -702,8 +717,8 @@ TRUE if the folder exists. FALSE otherwise.
 cache <- Cache$new(tempdir())
 
 # Test if a sub-folder exists
-if (cache$hasFolder('my_sub_folder')) {
-  print('Sub-folder exists.')
+if (cache$hasFolder("my_sub_folder")) {
+  print("Sub-folder exists.")
 }
 
 # Erase cache
@@ -721,10 +736,10 @@ cache$erase()
 \subsection{Method \code{getPaths()}}{
 Computes paths in the cache folder or a cache sub-folder.
 
-Takes a list of relative paths and resolves them using the cache folder path
-to a list of absolute paths.
+Takes a list of relative paths and resolves them using the cache folder
+path to a list of absolute paths.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$getPaths(paths, suffix = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$getPaths(paths, suffix = NULL, sub_folder = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -734,7 +749,10 @@ to a list of absolute paths.
 
 \item{\code{suffix}}{A suffix to add to all paths.}
 
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -748,13 +766,13 @@ containing the absolute paths.
 cache <- Cache$new(tempdir())
 
 # Get the paths a list of filenames should have in the cache folder
-paths <- cache$getPaths(c('a.csv', 'b.txt'))
+paths <- cache$getPaths(c("a.csv", "b.txt"))
 
 # Get paths using a common extension for filenames
-paths <- cache$getPaths(c('a', 'b'), suffix='.csv')
+paths <- cache$getPaths(c("a", "b"), suffix = ".csv")
 
 # Get paths of files inside a sub-folder
-paths <- cache$getPaths(c('a.csv', 'b.txt'), sub.folder='foo')
+paths <- cache$getPaths(c("a.csv", "b.txt"), sub_folder = "foo")
 
 # Erase cache
 cache$erase()
@@ -773,9 +791,11 @@ Search for files inside the cache folder or one of its subfolders.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$globPaths(
   suffix = NULL,
-  sub.folder = NULL,
-  tag.files = FALSE,
-  folders = FALSE
+  sub_folder = NULL,
+  tag_files = FALSE,
+  folders = FALSE,
+  tag.files = NULL,
+  sub.folder = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -784,13 +804,19 @@ Search for files inside the cache folder or one of its subfolders.
 \describe{
 \item{\code{suffix}}{The suffix files must have.}
 
-\item{\code{sub.folder}}{A sub-folder where to search.}
+\item{\code{sub_folder}}{A sub-folder where to search.}
 
-\item{\code{tag.files}}{If set to \code{FALSE} (default), exclude the tag files.
+\item{\code{tag_files}}{If set to \code{FALSE} (default), exclude the tag files.
 Otherwise include them in the output.}
 
 \item{\code{folders}}{If set to \code{FALSE} (default), exclude the folders.
 Otherwise include them in the output.}
+
+\item{\code{tag.files}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use tag_files
+instead.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -804,10 +830,10 @@ criteria.
 cache <- Cache$new(tempdir())
 
 # Get all existing files inside sub-folder foo
-paths <- cache$globPaths(sub.folder='foo')
+paths <- cache$globPaths(sub_folder = "foo")
 
-# Get all existing files with extension '.txt' inside main folder
-paths <- cache$globPaths(suffix='.txt')
+# Get all existing files with extension ".txt" inside main folder
+paths <- cache$globPaths(suffix = ".txt")
 
 # Erase cache
 cache$erase()
@@ -826,22 +852,34 @@ Gets the number of items contained inside a cache folder.
 
 Counts the number of items (files or folders) contained inside a cache
 folder.
-This method does not explore the file system recursively, but only look at
-the files inside the folder.
+This method does not explore the file system recursively, but only look
+at the files inside the folder.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$getNbItems(sub.folder = NULL, tag.files = FALSE, folders = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$getNbItems(
+  sub_folder = NULL,
+  tag_files = FALSE,
+  folders = FALSE,
+  tag.files = NULL,
+  sub.folder = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
 
-\item{\code{tag.files}}{If set to \code{FALSE} (default), do not count the tag
+\item{\code{tag_files}}{If set to \code{FALSE} (default), do not count the tag
 files. Otherwise count them.}
 
-\item{\code{folders}}{If set to \code{FALSE} (default), do not count the folders.
-Otherwise count them.}
+\item{\code{folders}}{If set to \code{FALSE} (default), do not count the
+folders. Otherwise count them.}
+
+\item{\code{tag.files}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use tag_files
+instead.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -853,8 +891,8 @@ The number of items.
 \preformatted{# Create a new cache instance
 cache <- Cache$new(tempdir())
 
-# Get the number of files inside sub-folder 'foo'
-n <- cache$getNbItems('foo')
+# Get the number of files inside sub-folder "foo"
+n <- cache$getNbItems("foo")
 
 # Erase cache
 cache$erase()
@@ -871,11 +909,11 @@ cache$erase()
 \subsection{Method \code{pathsExist()}}{
 Tests if paths exist inside a cache folder.
 
-Takes a list of relative paths and resolves them using the cache folder path
-to a list of absolute paths. Tests then if each path points to real object on
-the file system.
+Takes a list of relative paths and resolves them using the cache folder
+path to a list of absolute paths. Tests then if each path points to real
+object on the file system.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$pathsExist(paths, suffix = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$pathsExist(paths, suffix = NULL, sub_folder = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -885,7 +923,10 @@ the file system.
 
 \item{\code{suffix}}{A suffix to add to all paths.}
 
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -899,7 +940,7 @@ value if the file exists in the cache, or \code{FALSE} otherwise.
 cache <- Cache$new(tempdir())
 
 # Test if some files exist in the cache
-exits <- cache$pathsExist(c('a', 'b'), suffix='.txt')
+exits <- cache$pathsExist(c("a", "b"), suffix = ".txt")
 
 # Erase cache
 cache$erase()
@@ -917,33 +958,37 @@ cache$erase()
 Tests if a tag exists in the cache.
 
 Tags are empty files, without extension, whose name starts and ends with
-\code{'__'}.
+\code{"__"}.
 This method tests if some tag file already exist in a cache folder.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$tagExists(name, sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$tagExists(name, sub_folder = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the tag, without the prefix \code{'__'} and the
-suffix \code{'__'}. It will be automatically converted in uppercase. It can
-only contains digits, letters and underscore characters.}
+\item{\code{name}}{The name of the tag, without the prefix \code{"__"} and the
+suffix \code{"__"}. It will be automatically converted in uppercase. It
+can only contains digits, letters and underscore characters.}
 
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\code{TRUE} if the tag exists in the cache. \code{FALSE} otherwise.
+\code{TRUE} if the tag exists in the cache. \code{FALSE}
+otherwise.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{# Create a new cache instance
 cache <- Cache$new(tempdir())
 
-# Test if tag file 'downloaded' exists in sub-folder 'hmdb'
-if (cache$tagExists('downloaded', sub.folder='hmdb')) {
+# Test if tag file "downloaded" exists in sub-folder "hmdb"
+if (cache$tagExists("downloaded", sub_folder = "hmdb")) {
   print("Tag exists")
 }
 
@@ -962,17 +1007,20 @@ cache$erase()
 \subsection{Method \code{writeTag()}}{
 Sets a tag into the cache.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$writeTag(name, sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$writeTag(name, sub_folder = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the tag, without the prefix \code{'__'} and the
-suffix \code{'__'}. It will be automatically converted in uppercase. It can
-only contains digits, letters and underscore characters.}
+\item{\code{name}}{The name of the tag, without the prefix \code{"__"} and the
+suffix \code{"__"}. It will be automatically converted in uppercase. It
+can only contains digits, letters and underscore characters.}
 
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -984,8 +1032,8 @@ Nothing.
 \preformatted{# Create a new cache instance
 cache <- Cache$new(tempdir())
 
-# Create tag file 'downloaded' in sub-folder 'hmdb'
-cache$writeTag('downloaded', sub.folder='hmdb')
+# Create tag file "downloaded" in sub-folder "hmdb"
+cache$writeTag("downloaded", sub_folder = "hmdb")
 
 # Erase cache
 cache$erase()
@@ -1006,13 +1054,13 @@ This temporary folder located inside the cache folder is needed in order
 to be able to move/rename files into the right cache location.
 When creating files in the system temporary folder, which may reside on a
 different partition, moving a file could fail as in the following error:
-cannot rename file '/tmp/Rtmpld18y7/10182e3a086e7b8a7.tsv' to
-'/home/pr228844/dev/biodb/cache/comp.csv.file-58e...c4/2e3...a7.tsv',
-reason 'Invalid cross-device link'.
+cannot rename file "/tmp/Rtmpld18y7/10182e3a086e7b8a7.tsv" to
+"/home/pr228844/dev/biodb/cache/comp.csv.file-58e...c4/2e3...a7.tsv",
+reason "Invalid cross-device link".
 
 When you download a file directly to the disk using for instance
-\code{download.file()}, write the destination into this destination folder.
-When downloaded is complete, move the file using the method
+\code{download.file()}, write the destination into this destination
+folder.  When downloaded is complete, move the file using the method
 \code{importFiles()}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$getTmp()}\if{html}{\out{</div>}}
@@ -1077,8 +1125,9 @@ Imports existing files into the cache.
   src,
   dst = NULL,
   suffix = NULL,
-  sub.folder = NULL,
-  action = c("copy", "move")
+  sub_folder = NULL,
+  action = c("copy", "move"),
+  sub.folder = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -1087,16 +1136,20 @@ Imports existing files into the cache.
 \describe{
 \item{\code{src}}{A character vector containing paths to files to import.}
 
-\item{\code{dst}}{A character vector containing destination filenames. The vector
-must have the length as the \code{src} vector. If \code{NULL}, the
-filenames in \code{src} will be used.}
+\item{\code{dst}}{A character vector containing destination filenames. The
+vector must have the length as the \code{src} vector. If
+\code{NULL}, the filenames in \code{src} will be used.}
 
 \item{\code{suffix}}{A suffix to add to all destination paths.}
 
-\item{\code{sub.folder}}{A sub-folder. All files will copied or moved to this
+\item{\code{sub_folder}}{A sub-folder. All files will copied or moved to this
 sub-folder.}
 
-\item{\code{action}}{Specifies if files have to be moved or copied into the cache.}
+\item{\code{action}}{Specifies if files have to be moved or copied into the
+cache.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1109,11 +1162,11 @@ Nothing.
 cache <- Cache$new(tempdir())
 
 # Create some files for the example
-files <- c('k.txt', 'u.csv')
+files <- c("k.txt", "u.csv")
 file.create(files)
 
 # Move those files into the cache
-cache$importFiles(files, sub.folder='foo', action='copy')
+cache$importFiles(files, sub_folder = "foo", action = "copy")
 
 # Remove original files
 unlink(files)
@@ -1135,7 +1188,13 @@ Saves contents to files into the cache.
 
 Saves character values into files inside a cache folder.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$saveContents(contents, dst, suffix = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$saveContents(
+  contents,
+  dst,
+  suffix = NULL,
+  sub_folder = NULL,
+  sub.folder = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1143,13 +1202,16 @@ Saves character values into files inside a cache folder.
 \describe{
 \item{\code{contents}}{A character vector containing the contents to write.}
 
-\item{\code{dst}}{A character vector containing destination filenames. The vector
-must have the length as the \code{contents} vector.}
+\item{\code{dst}}{A character vector containing destination filenames. The
+vector must have the length as the \code{contents} vector.}
 
 \item{\code{suffix}}{A suffix to add to all destination paths.}
 
-\item{\code{sub.folder}}{A sub-folder. All files will copied or moved to this
+\item{\code{sub_folder}}{A sub-folder. All files will copied or moved to this
 sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1162,10 +1224,10 @@ Nothing.
 cache <- Cache$new(tempdir())
 
 # Create some contents for the example
-contents <- c('a', 'b', 'c')
+contents <- c("a", "b", "c")
 
 # Save contents
-cache$saveContents(contents, c('a.txt', 'b.txt', 'c.txt'))
+cache$saveContents(contents, c("a.txt", "b.txt", "c.txt"))
 
 # Erase cache
 cache$erase()
@@ -1184,26 +1246,29 @@ Loads contents from files stored into the cache.
 
 Loads character values from cache files.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$loadContents(paths, suffix = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$loadContents(paths, suffix = NULL, sub_folder = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{paths}}{A character vector containing destination filenames. The vector
-must have the length as the \code{contents} vector.}
+\item{\code{paths}}{A character vector containing destination filenames. The
+vector must have the length as the \code{contents} vector.}
 
 \item{\code{suffix}}{A suffix to add to all destination paths.}
 
-\item{\code{sub.folder}}{A sub-folder. All files will copied or moved to this
+\item{\code{sub_folder}}{A sub-folder. All files will copied or moved to this
 sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A character vector , the same size as \code{paths}, containing the
-contents of the files. If some file does not exist, a \code{NA} value is
-returned.
+A character vector , the same size as \code{paths}, containing
+the contents of the files. If some file does not exist, a \code{NA} value
+is returned.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1211,15 +1276,15 @@ returned.
 cache <- Cache$new(tempdir())
 
 # Create some contents for the example
-contents <- c('1', '2', '3')
+contents <- c("1", "2", "3")
 
 # Save contents
-cache$saveContents(contents, c('a', 'b', 'c'), suffix='.txt',
-                   sub.folder='ex2')
+cache$saveContents(contents, c("a", "b", "c"), suffix = ".txt",
+                   sub_folder = "ex2")
 
 # Load contents
-contents <- cache$loadContents(c('a', 'b', 'c'), suffix='.txt',
-                               sub.folder='ex2')
+contents <- cache$loadContents(c("a", "b", "c"), suffix = ".txt",
+                               sub_folder = "ex2")
 
 # Erase cache
 cache$erase()
@@ -1239,7 +1304,12 @@ Deletes a list of paths inside the cache system.
 Takes a list of relative paths, resolves them using the cache folder path
 to a list of absolute paths, and deletes the corresponding files.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$delPaths(paths = NULL, suffix = NULL, sub.folder = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$delPaths(
+  paths = NULL,
+  suffix = NULL,
+  sub_folder = NULL,
+  sub.folder = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1249,7 +1319,10 @@ to a list of absolute paths, and deletes the corresponding files.
 
 \item{\code{suffix}}{A suffix to add to all paths.}
 
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1262,7 +1335,7 @@ Nothing.
 cache <- Cache$new(tempdir())
 
 # Delete some cache files
-cache$delPaths(c('a.txt', 'b.txt'))
+cache$delPaths(c("a.txt", "b.txt"))
 
 # Erase cache
 cache$erase()
@@ -1281,13 +1354,16 @@ Deletes all files in a sub-folder.
 
 Deletes a sub-folder and all its content.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$delFolder(sub.folder)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$delFolder(sub_folder, sub.folder = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{sub.folder}}{A sub-folder.}
+\item{\code{sub_folder}}{A sub-folder.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1300,7 +1376,7 @@ Nothing.
 cache <- Cache$new(tempdir())
 
 # Delete sub-folder
-cache$delFolder('my_sub_folder')
+cache$delFolder("my_sub_folder")
 
 # Erase cache
 cache$erase()
@@ -1322,34 +1398,50 @@ Returns by default the full paths of the found files.
 It is possible to filter on files suffix, and to extract the basename.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$listFolder(
-  sub.folder = NULL,
+  sub_folder = NULL,
   suffix = NULL,
-  extract.name = FALSE,
-  remove.suffix = FALSE,
-  tag.files = FALSE,
-  folders = FALSE
+  extract_name = FALSE,
+  remove_suffix = FALSE,
+  tag_files = FALSE,
+  folders = FALSE,
+  extract.name = NULL,
+  remove.suffix = NULL,
+  tag.files = NULL,
+  sub.folder = NULL
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{sub.folder}}{A sub-folder, or \code{NULL} for the main folder.}
+\item{\code{sub_folder}}{A sub-folder, or \code{NULL} for the main folder.}
 
 \item{\code{suffix}}{A file suffix on which to filter.}
 
-\item{\code{extract.name}}{If set to \code{TRUE}, instead of returning the full
+\item{\code{extract_name}}{If set to \code{TRUE}, instead of returning the full
 paths of the files, returns their basenames.}
 
-\item{\code{remove.suffix}}{When set to \code{TRUE} and \code{extract.name} is
-\code{TRUE} and \code{suffix} is not \code{NULL}, remove the suffix from
-the returned basenames.}
+\item{\code{remove_suffix}}{When set to \code{TRUE} and \code{extract.name} is
+\code{TRUE} and \code{suffix} is not \code{NULL},
+remove the suffix from the returned basenames.}
 
-\item{\code{tag.files}}{If set to \code{FALSE} (default), exclude the tag files.
+\item{\code{tag_files}}{If set to \code{FALSE} (default), exclude the tag files.
 Otherwise include them in the output.}
 
 \item{\code{folders}}{If set to \code{FALSE} (default), exclude the folders.
 Otherwise include them in the output.}
+
+\item{\code{extract.name}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use extract_name
+instead.}
+
+\item{\code{remove.suffix}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use remove_suffix
+instead.}
+
+\item{\code{tag.files}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use tag_files
+instead.}
+
+\item{\code{sub.folder}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use sub_folder
+instead.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1360,10 +1452,10 @@ The paths to the found files, or the names of the files if
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{# Create a new cache instance
-cache <- Cache$new('my_cache_folder')
+cache <- Cache$new("my_cache_folder")
 
 # List files in sub-folder
-files <- cache$listFolder('my_sub_folder')
+files <- cache$listFolder("my_sub_folder")
 
 }
 \if{html}{\out{</div>}}

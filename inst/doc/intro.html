@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -353,19 +353,21 @@ delete, place in sub-folders, etc).</p>
 <p>First, start by loading the package:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fscache)</span></code></pre></div>
 <p>Then we create a <code>Cache</code> instance:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>my.folder.cache <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&#39;my.cache&#39;</span>) <span class="co"># We would usually use here a relative path like &#39;myapp&#39;</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>cache <span class="ot">&lt;-</span> Cache<span class="sc">$</span><span class="fu">new</span>(my.folder.cache)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>my_folder_cache <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;my.cache&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>cache <span class="ot">&lt;-</span> Cache<span class="sc">$</span><span class="fu">new</span>(my_folder_cache)</span></code></pre></div>
 <p>For this vignette, we use a temporary folder as our cache folder.
 Since the temporary folder is an absolute path, the user HOME folder
-will not be used. However, usually, in practice, we give the name of our
-application as the cache folder to create. The folder will be created in
-the user space, inside the standard path defined for the operating
-system, given by the <code>tools</code> package.</p>
+will not be used. In practice, however, we give the name of our
+application as the cache folder to create. It will then be created
+inside the standard use cache folder, which is relative to the user HOME
+folder. The folder will be created in the user space, inside the
+standard path defined for the operating system, given by the
+<code>tools</code> package.</p>
 <p>If we look at the <code>cache</code> object, we can see the exact
 location of the created cache folder:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>cache</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; Cache class</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;   The main cache folder is at /tmp/RtmpXImciY/my.cache.</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;   The main cache folder is at /tmp/RtmpTxo928/my.cache.</span></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;   The cache is readable.</span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;   The cache is writable.</span></span></code></pre></div>
 <p>We also see that the cache is both <em>readable</em> and
@@ -376,48 +378,48 @@ purposes.</p>
 <p>The full path to the cache folder is also accessible through the
 <code>getFolder()</code> method:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">getFolder</span>()</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpXImciY/my.cache&quot;</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpTxo928/my.cache&quot;</span></span></code></pre></div>
 </div>
 <div id="saving-and-loading-content" class="section level2">
 <h2>Saving and loading content</h2>
 <p>Let us save the following text contents into the cache:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abc&#39;</span>, <span class="st">&#39;def&#39;</span>, <span class="st">&#39;ghi&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;abc&quot;</span>, <span class="st">&quot;def&quot;</span>, <span class="st">&quot;ghi&quot;</span>)</span></code></pre></div>
 <p>For that we use the <code>saveContents()</code> method:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">saveContents</span>(x, <span class="fu">c</span>(<span class="st">&#39;a.txt&#39;</span>, <span class="st">&#39;b.txt&#39;</span>, <span class="st">&#39;c.txt&#39;</span>))</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:10.917] Save 3 contents to /tmp/RtmpXImciY/my.cache.</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">saveContents</span>(x, <span class="fu">c</span>(<span class="st">&quot;a.txt&quot;</span>, <span class="st">&quot;b.txt&quot;</span>, <span class="st">&quot;c.txt&quot;</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:47.931] Save 3 contents to /tmp/RtmpTxo928/my.cache.</span></span></code></pre></div>
 <p>We have saved our three strings into three files inside the cache
 folder. Since all three files have the same extension, we may have used
 the <code>suffix</code> parameters to avoid repeating the extension in
 the filenames:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">saveContents</span>(x, <span class="fu">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>, <span class="st">&#39;c&#39;</span>), <span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:10.964] Save 3 contents to /tmp/RtmpXImciY/my.cache.</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">saveContents</span>(x, <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:47.979] Save 3 contents to /tmp/RtmpTxo928/my.cache.</span></span></code></pre></div>
 <p>Note that <em>fscache</em> does not complain that the files already
 exist. It overrides them silently.</p>
 <p>We can list the existing files inside the cache folder with the
 following command:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">globPaths</span>(<span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpXImciY/my.cache/a.txt&quot; &quot;/tmp/RtmpXImciY/my.cache/b.txt&quot;</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpXImciY/my.cache/c.txt&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">globPaths</span>(<span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpTxo928/my.cache/a.txt&quot; &quot;/tmp/RtmpTxo928/my.cache/b.txt&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpTxo928/my.cache/c.txt&quot;</span></span></code></pre></div>
 <p>Loading the contents from cached files is done with the
 <code>loadContents()</code> method, which returns a
 <code>character</code> vector with names set with the file paths:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">loadContents</span>(<span class="fu">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>, <span class="st">&#39;c&#39;</span>), <span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:10.983] Load 3 contents, from /tmp/RtmpXImciY/my.cache.</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpXImciY/my.cache/a.txt /tmp/RtmpXImciY/my.cache/b.txt </span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">loadContents</span>(<span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:47.997] Load 3 contents, from /tmp/RtmpTxo928/my.cache.</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpTxo928/my.cache/a.txt /tmp/RtmpTxo928/my.cache/b.txt </span></span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt;                          &quot;abc&quot;                          &quot;def&quot; </span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpXImciY/my.cache/c.txt </span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpTxo928/my.cache/c.txt </span></span>
 <span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt;                          &quot;ghi&quot;</span></span></code></pre></div>
 <p>Note that if we try to load the content from non-existing file, a
 <code>NA</code> value will be returned:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">loadContents</span>(<span class="fu">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>, <span class="st">&#39;c&#39;</span>, <span class="st">&#39;d&#39;</span>), <span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:10.994] Load 4 contents, from /tmp/RtmpXImciY/my.cache.</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpXImciY/my.cache/a.txt /tmp/RtmpXImciY/my.cache/b.txt </span></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">loadContents</span>(<span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>), <span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:48.014] Load 4 contents, from /tmp/RtmpTxo928/my.cache.</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpTxo928/my.cache/a.txt /tmp/RtmpTxo928/my.cache/b.txt </span></span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt;                          &quot;abc&quot;                          &quot;def&quot; </span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpXImciY/my.cache/c.txt /tmp/RtmpXImciY/my.cache/d.txt </span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt; /tmp/RtmpTxo928/my.cache/c.txt /tmp/RtmpTxo928/my.cache/d.txt </span></span>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt;                          &quot;ghi&quot;                             NA</span></span></code></pre></div>
 <p>Prior to loading contents, we may test the existence of files inside
 the cache folder, with the <code>pathsExist()</code> method:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">pathsExist</span>(<span class="fu">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>, <span class="st">&#39;c&#39;</span>, <span class="st">&#39;d&#39;</span>), <span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>)</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">pathsExist</span>(<span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>), <span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; [1]  TRUE  TRUE  TRUE FALSE</span></span></code></pre></div>
 </div>
 <div id="using-sub-folders" class="section level2">
@@ -426,57 +428,57 @@ the cache folder, with the <code>pathsExist()</code> method:</p>
 be put inside sub-folders to organize them.</p>
 <p>Here we put our contents into three new files inside a sub-folder
 named <code>&quot;mysub&quot;</code> that will be automatically created:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">saveContents</span>(x, <span class="fu">c</span>(<span class="st">&#39;x&#39;</span>, <span class="st">&#39;y&#39;</span>, <span class="st">&#39;z&#39;</span>), <span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>, <span class="at">sub.folder=</span><span class="st">&#39;mysub&#39;</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:11.010] Create cache folder &quot;/tmp/RtmpXImciY/my.cache/mysub&quot;.</span></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:11.011] Save 3 contents to /tmp/RtmpXImciY/my.cache/mysub.</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">saveContents</span>(x, <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;z&quot;</span>), <span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>, <span class="at">sub_folder =</span> <span class="st">&quot;mysub&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:48.031] Create cache folder &quot;/tmp/RtmpTxo928/my.cache/mysub&quot;.</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:48.032] Save 3 contents to /tmp/RtmpTxo928/my.cache/mysub.</span></span></code></pre></div>
 <p>Let us look a the content of our sub-folder:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">globPaths</span>(<span class="at">sub.folder=</span><span class="st">&#39;mysub&#39;</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpXImciY/my.cache/mysub/x.txt&quot;</span></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpXImciY/my.cache/mysub/y.txt&quot;</span></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpXImciY/my.cache/mysub/z.txt&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">globPaths</span>(<span class="at">sub_folder =</span> <span class="st">&quot;mysub&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpTxo928/my.cache/mysub/x.txt&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpTxo928/my.cache/mysub/y.txt&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt; [3] &quot;/tmp/RtmpTxo928/my.cache/mysub/z.txt&quot;</span></span></code></pre></div>
 </div>
 <div id="deleting-files" class="section level2">
 <h2>Deleting files</h2>
 <p>Files may be deleted from the cache, as in the following command:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">delPaths</span>(<span class="fu">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;c&#39;</span>), <span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">delPaths</span>(<span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;c&quot;</span>), <span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>)</span></code></pre></div>
 <p>The remaining files are:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">globPaths</span>()</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpXImciY/my.cache/b.txt&quot;</span></span></code></pre></div>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpTxo928/my.cache/b.txt&quot;</span></span></code></pre></div>
 <p>For deleting files inside a sub-folder, use the
-<code>sub.folder</code> parameter:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">delPaths</span>(<span class="st">&#39;y&#39;</span>, <span class="at">suffix=</span><span class="st">&#39;.txt&#39;</span>, <span class="at">sub.folder=</span><span class="st">&#39;mysub&#39;</span>)</span></code></pre></div>
+<code>sub_folder</code> parameter:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">delPaths</span>(<span class="st">&quot;y&quot;</span>, <span class="at">suffix =</span> <span class="st">&quot;.txt&quot;</span>, <span class="at">sub_folder =</span> <span class="st">&quot;mysub&quot;</span>)</span></code></pre></div>
 <p>For deleting a sub-folder with all its content, use the
 <code>delFolder()</code> method:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">delFolder</span>(<span class="st">&#39;mysub&#39;</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:11.043] Erasing sub-folder &quot;mysub&quot;.</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">delFolder</span>(<span class="st">&quot;mysub&quot;</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:48.083] Erasing sub-folder &quot;mysub&quot;.</span></span></code></pre></div>
 </div>
 <div id="copying-or-moving-files-into-the-cache" class="section level2">
 <h2>Copying or moving files into the cache</h2>
 <p>It is also possible to move or copy files that reside outside the
 cache folder, into the cache folder.</p>
 <p>Let us create a file:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>my.file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="st">&#39;my.file&#39;</span>, <span class="at">fileext=</span><span class="st">&#39;.txt&#39;</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;My text content.&#39;</span>, <span class="at">file=</span>my.file)</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>my.file</span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpXImciY/my.file7f20b3e3a1095.txt&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>my_file <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="st">&quot;my_file&quot;</span>, <span class="at">fileext =</span> <span class="st">&quot;.txt&quot;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;My text content.&quot;</span>, <span class="at">file =</span> my_file)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>my_file</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpTxo928/my_file1ff07d1df59877.txt&quot;</span></span></code></pre></div>
 <p>To move it into the cache, we use the <code>importFiles()</code>
 method:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">importFiles</span>(my.file, <span class="at">action=</span><span class="st">&#39;move&#39;</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:11.058] move 1 files to /tmp/RtmpXImciY/my.cache.</span></span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:11.059] Done importing files.</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">importFiles</span>(my_file, <span class="at">action =</span> <span class="st">&quot;move&quot;</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:48.098] move 1 files to /tmp/RtmpTxo928/my.cache.</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:48.099] Done importing files.</span></span></code></pre></div>
 <p>For copying, we would have set <code>action</code> to
 <code>&quot;copy&quot;</code>.</p>
 <p>Here the new list of cached files:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">globPaths</span>()</span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpXImciY/my.cache/b.txt&quot;                   </span></span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpXImciY/my.cache/my.file7f20b3e3a1095.txt&quot;</span></span></code></pre></div>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;/tmp/RtmpTxo928/my.cache/b.txt&quot;                    </span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="co">#&gt; [2] &quot;/tmp/RtmpTxo928/my.cache/my_file1ff07d1df59877.txt&quot;</span></span></code></pre></div>
 </div>
 <div id="erasing-the-cache" class="section level2">
 <h2>Erasing the cache</h2>
 <p>If we wish to delete the whole cache folder with all its content, we
 have to run the following command:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>cache<span class="sc">$</span><span class="fu">erase</span>()</span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co">#&gt; INFO  [18:25:11.075] Erasing cache &quot;/tmp/RtmpXImciY/my.cache&quot;.</span></span></code></pre></div>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co">#&gt; INFO  [13:50:48.112] Erasing cache &quot;/tmp/RtmpTxo928/my.cache&quot;.</span></span></code></pre></div>
 </div>
 
 
