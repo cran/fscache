@@ -9,3 +9,9 @@
 An R package to handle a user file system cache for an application or package.
 
 See [documentation](https://cnrgh.gitlab.io/databases/r-fscache/).
+
+## NEWS
+
+### V1.0.4
+
+ * Correct example that dit not delete a folder create inside user's cache directory.

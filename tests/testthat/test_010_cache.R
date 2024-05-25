@@ -6,8 +6,14 @@ lgr::lgr$remove_appender(1)
 # Temp folder, to work in
 temp_dir <- tempdir()
 
-# Working folder
+# Define working folder
 wrk_dir <- file.path(temp_dir, "wrk")
+
+# Convert from Windows style to UNIX style, in order to avoid failure of
+# comparison tests on Windows platforms.
+wrk_dir <- gsub("\\\\", "/", wrk_dir)
+
+# Create working folder
 dir.create(wrk_dir, recursive = TRUE)
 
 folder_name <- "test-fscache"
@@ -36,6 +42,27 @@ testthat::test_that("Class initialization works fine", {
   file.create(file.path(folder_path, "some_file.txt"))
   testthat::expect_error(fscache::Cache$new(folder_path))
   cache <- fscache::Cache$new(folder_path, force = TRUE)
+})
+
+testthat::test_that("We can use a relative folder", {
+
+  my_folder <- "relative-folder"
+
+  # User cache folder
+  cache <- fscache::Cache$new(my_folder, create = FALSE)
+  testthat::expect_false(dir.exists(tools::R_user_dir(my_folder,
+                                                      which = "cache")))
+  testthat::expect_false(dir.exists(tools::R_user_dir(my_folder,
+                                                      which = "cache")))
+  testthat::expect_false(dir.exists(tools::R_user_dir(my_folder,
+                                                      which = "cache")))
+  testthat::expect_equal(cache$getFolder(create = FALSE),
+                         tools::R_user_dir(my_folder, which = "cache"))
+
+  # Relative to current working dir
+  setwd(wrk_dir)
+  cache <- fscache::Cache$new(my_folder, user = FALSE)
+  testthat::expect_equal(cache$getFolder(), file.path(wrk_dir, my_folder))
 })
 
 testthat::test_that("We can save and load contents into files", {
@@ -434,6 +461,104 @@ testthat::test_that("tagExists() works fine", {
   cache$writeTag("A")
   testthat::expect_true(cache$tagExists("A"))
 })
+
+# nolint start: indentation_linter
+testthat::test_that(paste("Deprecated parameters are marked",
+                          "as deprecated and still work"), {
+
+  # Create cache
+  cache <- fscache::Cache$new(folder_path, user = FALSE)
+
+  # getFolder()
+  lifecycle::expect_deprecated(x <- cache$getFolder(sub.folder = 'foo'))
+  y <- cache$getFolder(sub_folder = 'foo')
+  testthat::expect_equal(x, y)
+
+  # hasFolder()
+  lifecycle::expect_deprecated(x <- cache$hasFolder(sub.folder = 'foo'))
+  testthat::expect_true(x)
+
+  # importFiles()
+  setwd(wrk_dir)
+  files <- 'a.txt'
+  for (f in files) {
+    write('', file=f)
+  }
+  lifecycle::expect_deprecated(cache$importFiles(files, sub.folder = 'foo',
+                                                 action = 'move'))
+
+  # saveContents()
+  f <- 'b.txt'
+  content <- 'abcde'
+  lifecycle::expect_deprecated(cache$saveContents(content, f,
+                                                  sub.folder = 'foo'))
+  files <- c(files, f)
+
+  # loadContents()
+  lifecycle::expect_deprecated(x <- cache$loadContents(f, sub.folder = 'foo'))
+  testthat::expect_equal(unname(x), content)
+
+  # getPaths()
+  paths <- files
+  lifecycle::expect_deprecated(x <- cache$getPaths(paths, sub.folder = 'foo'))
+  y <- cache$getPaths(paths, sub_folder = 'foo')
+  testthat::expect_equal(x, y)
+
+  # globPaths()
+  lifecycle::expect_deprecated(x <- cache$globPaths(sub.folder = 'foo'))
+  y <- cache$globPaths(sub_folder = 'foo')
+  testthat::expect_equal(x, y)
+  lifecycle::expect_deprecated(x <- cache$globPaths(tag.files = TRUE))
+  y <- cache$globPaths(tag.files = TRUE)
+  testthat::expect_equal(x, y)
+
+  # getNbItems()
+  lifecycle::expect_deprecated(x <- cache$getNbItems(sub.folder = 'foo'))
+  y <- cache$getNbItems(sub_folder = 'foo')
+  testthat::expect_equal(x, y)
+  lifecycle::expect_deprecated(x <- cache$getNbItems(tag.files = TRUE))
+  y <- cache$getNbItems(tag.files = TRUE)
+  testthat::expect_equal(x, y)
+
+  # pathsExist()
+  lifecycle::expect_deprecated(x <- cache$pathsExist(paths, sub.folder = 'foo'))
+  testthat::expect_true(all(x))
+
+  # writeTag()
+  tag <- 'XXX'
+  lifecycle::expect_deprecated(cache$writeTag(tag, sub.folder = 'foo'))
+
+  # tagExists()
+  lifecycle::expect_deprecated(x <- cache$tagExists(tag, sub.folder = 'foo'))
+  testthat::expect_true(x)
+
+  # listFolder()
+  lifecycle::expect_deprecated(x <- cache$listFolder(sub.folder = 'foo'))
+  y <- cache$listFolder(sub_folder = 'foo')
+  testthat::expect_equal(x, y)
+  lifecycle::expect_deprecated(x <- cache$listFolder(sub.folder = 'foo',
+                                                     remove.suffix = TRUE))
+  y <- cache$listFolder(sub_folder = 'foo', remove_suffix = TRUE)
+  testthat::expect_equal(x, y)
+  lifecycle::expect_deprecated(x <- cache$listFolder(sub.folder = 'foo',
+                                                     extract.name = TRUE))
+  y <- cache$listFolder(sub_folder = 'foo', extract_name = TRUE)
+  testthat::expect_equal(x, y)
+  lifecycle::expect_deprecated(x <- cache$listFolder(tag.files = TRUE))
+  y <- cache$listFolder(tag_files = TRUE)
+  testthat::expect_equal(x, y)
+
+  # delPaths()
+  lifecycle::expect_deprecated(cache$delPaths(paths[1], sub.folder = 'foo'))
+
+  # delFolder()
+  lifecycle::expect_deprecated(cache$delFolder(sub.folder = 'foo'))
+  testthat::expect_false(cache$hasFolder(sub_folder = 'foo'))
+
+  # Erase cache
+  cache$erase()
+})
+# nolint end
 
 # Erase everything
 cache <- fscache::Cache$new(folder_path)

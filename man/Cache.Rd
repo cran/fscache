@@ -371,6 +371,9 @@ cache <- Cache$new("my_cache_folder")
 # List files in sub-folder
 files <- cache$listFolder("my_sub_folder")
 
+# Remove cache folder
+cache$erase()
+
 
 ## ------------------------------------------------
 ## Method `Cache$print`
@@ -441,7 +444,7 @@ When relative, the absolute root folder is either the standard user cache
 folder or the current working directory, depending on \code{user}
 parameter.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$new(folder, user = TRUE, force = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Cache$new(folder, user = TRUE, force = FALSE, create = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -461,6 +464,9 @@ using.}
 \item{\code{force}}{If the folder exists, is not empty and is not an fscache
 folder, fails if force is \code{FALSE}, and use folder
 anyway if force is \code{TRUE}.}
+
+\item{\code{create}}{If \code{FALSE}, does not create the cache folder if does
+not exist already. Used for testing purposes only.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1456,6 +1462,9 @@ cache <- Cache$new("my_cache_folder")
 
 # List files in sub-folder
 files <- cache$listFolder("my_sub_folder")
+
+# Remove cache folder
+cache$erase()
 
 }
 \if{html}{\out{</div>}}

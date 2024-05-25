@@ -70,6 +70,8 @@ Cache <- R6::R6Class( # nolint: object_name_linter
     #' @param force If the folder exists, is not empty and is not an fscache
     #'              folder, fails if force is \code{FALSE}, and use folder
     #'              anyway if force is \code{TRUE}.
+    #' @param create If \code{FALSE}, does not create the cache folder if does
+    #' not exist already. Used for testing purposes only.
     #' @return Nothing.
     #'
     #' @examples
@@ -83,7 +85,7 @@ Cache <- R6::R6Class( # nolint: object_name_linter
     #' # Erase cache
     #' cache$erase()
     #'
-    initialize = function(folder, user = TRUE, force = FALSE) {
+    initialize = function(folder, user = TRUE, force = FALSE, create = TRUE) {
 
       chk::chk_string(folder)
       chk::chk_flag(user)
@@ -106,8 +108,12 @@ Cache <- R6::R6Class( # nolint: object_name_linter
 
       if (! dir.exists(folder)) {
         # Folder does not exist
-        dir.create(folder, recursive = TRUE)
-        file.create(tag_file)
+        if (create) {
+          dir.create(folder, recursive = TRUE)
+          file.create(tag_file)
+        } else {
+          private$erased <- TRUE
+        }
 
       } else if (length(Sys.glob(file.path(folder, "*"))) == 0) {
         # Folder is empty
@@ -272,7 +278,7 @@ Cache <- R6::R6Class( # nolint: object_name_linter
       chk::chk_flag(fail)
 
       # Erased?
-      if (private$erased) {
+      if (private$erased && create) {
         dir.create(private$folder, recursive = TRUE)
         file.create(private$tag_file)
         private$erased <- FALSE
@@ -296,7 +302,7 @@ Cache <- R6::R6Class( # nolint: object_name_linter
       # Does folder exist?
       if (! dir.exists(path)) {
 
-        # Create sub-folder
+        # Create path
         if (create) {
           lgr::get_logger("fscache")$info(sprintf("Create cache folder \"%s\".",
                                                   path))
@@ -1141,6 +1147,9 @@ Cache <- R6::R6Class( # nolint: object_name_linter
     #' # List files in sub-folder
     #' files <- cache$listFolder("my_sub_folder")
     #'
+    #' # Remove cache folder
+    #' cache$erase()
+    #'
     listFolder = function(sub_folder = NULL, suffix = NULL,
                           extract_name = FALSE, remove_suffix = FALSE,
                           tag_files = FALSE, folders = FALSE,
@@ -1243,7 +1252,8 @@ Cache <- R6::R6Class( # nolint: object_name_linter
     #'
     print = function() {
       cat("Cache class\n")
-      cat("  The main cache folder is at ", self$getFolder(), ".\n", sep = "")
+      cat("  The main cache folder is at ", self$getFolder(create = FALSE),
+          ".\n", sep = "")
       cat("  The cache is ", (if (self$isReadable()) "" else "not "),
           "readable.\n", sep = "")
       cat("  The cache is ", (if (self$isWritable()) "" else "not "),
