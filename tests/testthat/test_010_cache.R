@@ -9,10 +9,6 @@ temp_dir <- tempdir()
 # Define working folder
 wrk_dir <- file.path(temp_dir, "wrk")
 
-# Convert from Windows style to UNIX style, in order to avoid failure of
-# comparison tests on Windows platforms.
-wrk_dir <- gsub("\\\\", "/", wrk_dir)
-
 # Create working folder
 dir.create(wrk_dir, recursive = TRUE)
 
@@ -59,10 +55,15 @@ testthat::test_that("We can use a relative folder", {
   testthat::expect_equal(cache$getFolder(create = FALSE),
                          tools::R_user_dir(my_folder, which = "cache"))
 
-  # Relative to current working dir
+  # Set current working dir
   setwd(wrk_dir)
+  my_wrk_dir <- getwd() # Get canonized form for Windows and MacOS
+  #                       Windows: replace \ by /
+  #                       MacOS: insert an eventual `/private` prefix.
+
+  # Test relative to current working dir
   cache <- fscache::Cache$new(my_folder, user = FALSE)
-  testthat::expect_equal(cache$getFolder(), file.path(wrk_dir, my_folder))
+  testthat::expect_equal(cache$getFolder(), file.path(my_wrk_dir, my_folder))
 })
 
 testthat::test_that("We can save and load contents into files", {

@@ -12,6 +12,10 @@ See [documentation](https://cnrgh.gitlab.io/databases/r-fscache/).
 
 ## NEWS
 
+### V1.0.5
+
+ * Correct test of relative cache folder on Windows and MacOS.
+
 ### V1.0.4
 
- * Correct example that dit not delete a folder create inside user's cache directory.
+ * Correct example that dit not delete a folder created inside user's cache directory.
